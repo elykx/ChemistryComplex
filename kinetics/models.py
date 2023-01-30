@@ -1,5 +1,5 @@
 from django.db import models
-from django.core import validators
+
 
 class TableParameters(models.Model):
     components = models.IntegerField(verbose_name='Количество компонентов')
@@ -8,13 +8,13 @@ class TableParameters(models.Model):
 
 
 class InputData(models.Model):
-    initial_time = models.DecimalField(max_digits=10, decimal_places=6, verbose_name='Начальное время t0')
-    time = models.DecimalField(max_digits=10, decimal_places=6, verbose_name='Время t')
-    step = models.DecimalField(max_digits=10, decimal_places=6, verbose_name= 'Шаг')
-    matrix_stechiometric_coefficients = models.JSONField(verbose_name='Матрица стехиометрических коэффициентов')
-    matrix_indicators = models.JSONField(verbose_name='Матрица показателей степени')
-    experimental_data = models.JSONField(verbose_name='Экспериментальные данные')
-    constants_speed = models.JSONField(verbose_name='Константы скорости')
+    initial_time = models.FloatField(verbose_name='Начальное время t0')
+    time = models.FloatField(verbose_name='Время t', )
+    step = models.FloatField(verbose_name='Шаг')
+    matrix_stechiometric_coefficients = models.TextField(verbose_name='Матрица стехиометрических коэффициентов')
+    matrix_indicators = models.TextField(verbose_name='Матрица показателей степени')
+    experimental_data = models.TextField(verbose_name='Экспериментальные данные')
+    constants_speed = models.TextField(verbose_name='Константы скорости')
 
     EULER = 'EULER'
     IMPLICIT_EULER = 'IMPLICIT_EULER'
@@ -40,3 +40,12 @@ class InputData(models.Model):
                                     choices=METHOD_CHOICES,
                                     default=EULER,
                                     verbose_name="Метод решения")
+
+
+class SolutionData(models.Model):
+    input_data = models.ForeignKey(InputData, on_delete=models.CASCADE, verbose_name="Входные данные")
+    result = models.TextField(verbose_name="Данные, расчитанные выбранным методом")
+    time = models.TextField(verbose_name="Время", default="")
+
+    class Meta:
+        get_latest_by = 'created_at'
