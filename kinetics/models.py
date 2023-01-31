@@ -47,5 +47,3 @@ class SolutionData(models.Model):
     result = models.TextField(verbose_name="Данные, расчитанные выбранным методом")
     time = models.TextField(verbose_name="Время", default="")
 
-    class Meta:
-        get_latest_by = 'created_at'

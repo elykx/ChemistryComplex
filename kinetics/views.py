@@ -1,3 +1,5 @@
+import json
+
 import numpy as np
 from kinetics.PyDiffeq import ODE_Library
 from kinetics.ode_system import System_ODE
@@ -42,7 +44,8 @@ class InputDataViewSet(viewsets.ModelViewSet):
         try:
             logger.info("Solving System ODE %s", request.data)
             y0 = experimental_data[0][1:]
-            t = np.linspace(initial_time, time, int((time-initial_time)/step))
+            t = np.linspace(initial_time, time, int((time-initial_time)/step) + 1)
+            t = [round(x, 6) for x in t]
             system = System_ODE(y0, matrix_stechiometric_coefficients, matrix_indicators, constants_speed)
             result = ODE_Library(system, method).solve(t, y0)
             print(result)
@@ -51,8 +54,8 @@ class InputDataViewSet(viewsets.ModelViewSet):
 
             solution_data = SolutionData.objects.create(
                 input_data=input_data_instance,
-                result=result,
-                time=t,
+                result=json.dumps(result.tolist()),
+                time=json.dumps(t),
             )
             solution_serializer = SolutionDataSerializer(solution_data)
             return Response(solution_serializer.data)
@@ -66,4 +69,4 @@ class SolutionDataViewSet(viewsets.ModelViewSet):
     serializer_class = SolutionDataSerializer
 
     def get_queryset(self):
-        return SolutionData.objects.filter(id=SolutionData.objects.latest('created_at').id)
+        return SolutionData.objects.filter(id=SolutionData.objects.latest('id').id)
