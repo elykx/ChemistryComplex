@@ -1,10 +1,11 @@
 import json
 
 import numpy as np
-from kinetics.PyDiffeq import ODE_Library
-from kinetics.ode_system import System_ODE
+from kinetics.solution_services.changer_exp_data import change_exp_data
+from kinetics.solution_services.ode_system import System_ODE
 from kinetics.utils import to_representation
-from rest_framework import generics, viewsets, status
+from pydiffeq import ODE_Library
+from rest_framework import viewsets, status
 import logging
 
 from rest_framework.response import Response
@@ -19,6 +20,11 @@ class TableParametersViewSet(viewsets.ModelViewSet):
     queryset = TableParameters.objects.all()
     serializer_class = TableParametersSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
     def create(self, request, *args, **kwargs):
         logger.info("Received POST request with data: %s", request.data)
         return super().create(request, *args, **kwargs)
@@ -32,6 +38,7 @@ class InputDataViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         input_data = serializer.validated_data
+        print(input_data)
 
         matrix_stechiometric_coefficients = to_representation(input_data.get('matrix_stechiometric_coefficients'))
         matrix_indicators = to_representation(input_data.get('matrix_indicators'))
@@ -44,18 +51,18 @@ class InputDataViewSet(viewsets.ModelViewSet):
         try:
             logger.info("Solving System ODE %s", request.data)
             y0 = experimental_data[0][1:]
-            t = np.linspace(initial_time, time, int((time-initial_time)/step) + 1)
+            t = np.linspace(initial_time, time, int((time - initial_time) / step) + 1)
             t = [round(x, 6) for x in t]
             system = System_ODE(y0, matrix_stechiometric_coefficients, matrix_indicators, constants_speed)
             result = ODE_Library(system, method).solve(t, y0)
-            print(result)
-
+            experimental_point = change_exp_data(experimental_data, result, t)
+            print(y0)
             input_data_instance = serializer.save()
-
             solution_data = SolutionData.objects.create(
                 input_data=input_data_instance,
                 result=json.dumps(result.tolist()),
                 time=json.dumps(t),
+                experimental_point=json.dumps(experimental_point),
             )
             solution_serializer = SolutionDataSerializer(solution_data)
             return Response(solution_serializer.data)

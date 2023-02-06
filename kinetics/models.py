@@ -45,5 +45,6 @@ class InputData(models.Model):
 class SolutionData(models.Model):
     input_data = models.ForeignKey(InputData, on_delete=models.CASCADE, verbose_name="Входные данные")
     result = models.TextField(verbose_name="Данные, расчитанные выбранным методом")
-    time = models.TextField(verbose_name="Время", default="")
+    experimental_point = models.TextField(verbose_name="Значение в эксп. точках")
+    time = models.TextField(verbose_name="Время")
 

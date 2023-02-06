@@ -57,6 +57,8 @@ class InputDataSerializer(serializers.ModelSerializer):
 
 
 class SolutionDataSerializer(serializers.ModelSerializer):
+    input_data = InputDataSerializer(many=False, read_only=True)
+
     class Meta:
         model = SolutionData
-        fields = ('id', 'input_data', 'result', 'time')
+        fields = ('id', 'input_data', 'result', 'time', 'experimental_point')
