@@ -8,6 +8,7 @@ class TableParameters(models.Model):
 
 
 class InputData(models.Model):
+    table_parameters = models.ForeignKey(TableParameters, on_delete=models.CASCADE, verbose_name="Параметры таблицы")
     initial_time = models.FloatField(verbose_name='Начальное время t0')
     time = models.FloatField(verbose_name='Время t', )
     step = models.FloatField(verbose_name='Шаг')

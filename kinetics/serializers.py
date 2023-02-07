@@ -38,6 +38,7 @@ def min_max_matrix_validator(value):
 
 
 class InputDataSerializer(serializers.ModelSerializer):
+    table_parameters = TableParametersSerializer(many=False, read_only=True)
     initial_time = serializers.FloatField(validators=[MinValueValidator(0, "Минимальное начальное время: 0"),
                                                         MaxValueValidator(1000, "Максимальное начальное время: 1000")])
     time = serializers.FloatField(validators=[MinValueValidator(0, "Минимальное время: 0"),

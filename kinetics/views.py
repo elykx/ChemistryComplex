@@ -35,9 +35,12 @@ class InputDataViewSet(viewsets.ModelViewSet):
     serializer_class = InputDataSerializer
 
     def create(self, request, *args, **kwargs):
+        table_param_id = request.data.get("table_parameters")
+        table_param = TableParameters.objects.get(id=table_param_id)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         input_data = serializer.validated_data
+        input_data['table_parameters'] = table_param
         print(input_data)
 
         matrix_stechiometric_coefficients = to_representation(input_data.get('matrix_stechiometric_coefficients'))
