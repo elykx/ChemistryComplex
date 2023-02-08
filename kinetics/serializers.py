@@ -19,6 +19,7 @@ class TableParametersSerializer(serializers.ModelSerializer):
 
 def matrix_stechiometric_validator(value):
     value = value.replace("[", "").replace("]", "")
+    value = value.replace('"', "").replace('"', "")
     numbers = [row.split(',') for row in value.split(';')]
     numbers = [[float(num) for num in row] for row in numbers]
     for row in numbers:
@@ -29,6 +30,7 @@ def matrix_stechiometric_validator(value):
 
 def min_max_matrix_validator(value):
     value = value.replace("[", "").replace("]", "")
+    value = value.replace('"', "").replace('"', "")
     numbers = [row.split(',') for row in value.split(';')]
     numbers = [[float(num) for num in row] for row in numbers]
     for row in numbers:
@@ -62,4 +64,4 @@ class SolutionDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SolutionData
-        fields = ('id', 'input_data', 'result', 'time', 'experimental_point')
+        fields = '__all__'

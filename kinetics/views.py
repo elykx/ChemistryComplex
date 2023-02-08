@@ -41,7 +41,6 @@ class InputDataViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         input_data = serializer.validated_data
         input_data['table_parameters'] = table_param
-        print(input_data)
 
         matrix_stechiometric_coefficients = to_representation(input_data.get('matrix_stechiometric_coefficients'))
         matrix_indicators = to_representation(input_data.get('matrix_indicators'))
@@ -78,5 +77,11 @@ class SolutionDataViewSet(viewsets.ModelViewSet):
     queryset = SolutionData.objects.all()
     serializer_class = SolutionDataSerializer
 
-    def get_queryset(self):
-        return SolutionData.objects.filter(id=SolutionData.objects.latest('id').id)
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        try:
+            return SolutionData.objects.get(input_data__id=pk)
+        except SolutionData.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
