@@ -1,8 +1,5 @@
 import json
-from copy import copy
-
 import numpy as np
-from kinetics.sensetive.morris_method import MorrisMethod
 from kinetics.solution_services.changer_exp_data import change_exp_data
 from kinetics.solution_services.ode_system import System_ODE
 from kinetics.utils import to_representation
@@ -60,10 +57,7 @@ class InputDataViewSet(viewsets.ModelViewSet):
             system = System_ODE(y0, matrix_stechiometric_coefficients, matrix_indicators, constants_speed)
             result = ODE_Library(system, method).solve(t, y0)
             experimental_point = change_exp_data(experimental_data, result, t)
-            #
-            # met = ODE_Library(system, method)
-            # m = MorrisMethod(met, y0, t, 100, 4).elementary_effects()
-            # print(m)
+
             input_data_instance = serializer.save()
             solution_data = SolutionData.objects.create(
                 input_data=input_data_instance,
