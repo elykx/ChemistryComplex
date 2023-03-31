@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from kinetics.internal.models.table_parameters import TableParameters
+from kinetics.internal.models.validators.matrix_validators import stechiometric_validator, min_max_validator
 from kinetics.internal.models.validators.methods_name import METHOD_CHOICES, MethodName
 
 
@@ -13,10 +14,10 @@ class InputData(models.Model):
                              verbose_name='Время t', )
     step = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(1000)],
                              verbose_name='Шаг')
-    matrix_stechiometric_coefficients = models.TextField(verbose_name='Матрица стехиометрических коэффициентов')
-    matrix_indicators = models.TextField(verbose_name='Матрица показателей степени')
-    experimental_data = models.TextField(verbose_name='Экспериментальные данные')
-    constants_speed = models.TextField(verbose_name='Константы скорости')
+    matrix_stechiometric_coefficients = models.TextField(validators=[stechiometric_validator], verbose_name='Матрица стехиометрических коэффициентов')
+    matrix_indicators = models.TextField(validators=[min_max_validator], verbose_name='Матрица показателей степени')
+    experimental_data = models.TextField(validators=[min_max_validator], verbose_name='Экспериментальные данные')
+    constants_speed = models.TextField(validators=[min_max_validator], verbose_name='Константы скорости')
     method = models.CharField(max_length=255,
                               choices=METHOD_CHOICES,
                               default=MethodName.EXPLICIT_EULER.value,
