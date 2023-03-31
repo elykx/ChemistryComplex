@@ -4,31 +4,14 @@ from django.views import View
 from kinetics.internal.services.input_data_service import create_input_data, get_input_data_by_id
 from kinetics.internal.services.solution_data_service import get_solution_by_id
 from kinetics.internal.services.table_parameters_service import create_parameters, get_parameters_by_id
-from kinetics.internal.transport.rest.serializers import (
+from kinetics.internal.transport.rest.ser import (
     InputDataSerializer,
     SolutionDataSerializer,
     TableParametersSerializer,
 )
 
 
-class TableParametersView(View):
-    def get(self, request, index):
-        table_params = get_parameters_by_id(index)
-        if table_params:
-            serializer = TableParametersSerializer(table_params)
-            return JsonResponse(serializer.data, status=200)
-        else:
-            error = {"error": "TableParameters not found"}
-            return JsonResponse(data=error, status=404)
 
-    def post(self, request, *args, **kwargs):
-        serializer = TableParametersSerializer(data=request.POST)
-        if serializer.is_valid():
-            table_param = serializer.save()
-            create_parameters(table_param)
-            return JsonResponse(serializer.data, status=201)
-        else:
-            return JsonResponse(serializer.errors, status=400)
 
 
 class SolutionDataView(View):
