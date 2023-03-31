@@ -1,8 +1,9 @@
 from copy import copy
 
 import numpy as np
-from kinetics.sensetive.sensitivity_method import SensitivityMethod
 from pydiffeq import ODE_Library
+
+from kinetics.internal.services.sensetive.sensitivity_method import SensitivityMethod
 
 
 class MorrisMethod(SensitivityMethod):

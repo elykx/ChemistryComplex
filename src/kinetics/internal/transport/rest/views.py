@@ -1,32 +1,36 @@
 import json
-import numpy as np
-from kinetics.solution_services.changer_exp_data import change_exp_data
-from kinetics.solution_services.ode_system import System_ODE
-from kinetics.utils import to_representation
-from pydiffeq import ODE_Library
-from rest_framework import viewsets, status
 import logging
 
+import numpy as np
+from pydiffeq import ODE_Library
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 
-from .serializers import TableParametersSerializer, InputDataSerializer, SolutionDataSerializer
-from .models import TableParameters, InputData, SolutionData
+from kinetics.internal.services.solution_services.changer_exp_data import change_exp_data
+from kinetics.internal.services.solution_services.ode_system import System_ODE
+from kinetics.internal.transport.rest.serializers import (
+    InputDataSerializer,
+    SolutionDataSerializer,
+    TableParametersSerializer,
+)
+from kinetics.models import InputData, SolutionData, TableParameters
+from kinetics.utils import to_representation
 
 logger = logging.getLogger(__name__)
 
 
-class TableParametersViewSet(viewsets.ModelViewSet):
-    queryset = TableParameters.objects.all()
-    serializer_class = TableParametersSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-
-    def create(self, request, *args, **kwargs):
-        logger.info("Received POST request with data: %s", request.data)
-        return super().create(request, *args, **kwargs)
+# class TableParametersViewSet(viewsets.ModelViewSet):
+#     queryset = TableParameters.objects.all()
+#     serializer_class = TableParametersSerializer
+#
+#     def retrieve(self, request, *args, **kwargs):
+#         instance = self.get_object()
+#         serializer = self.get_serializer(instance)
+#         return Response(serializer.data)
+#
+#     def create(self, request, *args, **kwargs):
+#         logger.info("Received POST request with data: %s", request.data)
+#         return super().create(request, *args, **kwargs)
 
 
 class InputDataViewSet(viewsets.ModelViewSet):
@@ -55,14 +59,14 @@ class InputDataViewSet(viewsets.ModelViewSet):
             t = np.linspace(initial_time, time, int((time - initial_time) / step) + 1)
             t = [round(x, 6) for x in t]
             system = System_ODE(y0, matrix_stechiometric_coefficients, matrix_indicators, constants_speed)
-            result = ODE_Library(system, method).solve(t, y0)
+            result, t_eval = ODE_Library(system, method).solve(t, y0)
             experimental_point = change_exp_data(experimental_data, result, t)
 
             input_data_instance = serializer.save()
             solution_data = SolutionData.objects.create(
                 input_data=input_data_instance,
                 result=json.dumps(result.tolist()),
-                time=json.dumps(t),
+                time=json.dumps(t_eval.tolist()),
                 experimental_point=json.dumps(experimental_point),
             )
             solution_serializer = SolutionDataSerializer(solution_data)

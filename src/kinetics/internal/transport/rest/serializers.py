@@ -1,7 +1,8 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from rest_framework import serializers
-from django.core.validators import MinValueValidator, MaxValueValidator
 from rest_framework.exceptions import ValidationError
-from .models import TableParameters, InputData, SolutionData
+
+from kinetics.models import InputData, SolutionData, TableParameters
 
 
 class TableParametersSerializer(serializers.ModelSerializer):
