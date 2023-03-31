@@ -2,6 +2,8 @@ from django.http import JsonResponse
 from django.views import View
 
 from kinetics.internal.services.table_parameters_service import create_parameters, get_parameters_by_id
+from kinetics.internal.transport.rest.messages import Message
+from kinetics.internal.transport.rest.error import error_response
 from kinetics.internal.transport.rest.serializers.table_parameters_serializer import TableParametersSerializer
 
 
@@ -13,8 +15,8 @@ class TableParametersView(View):
             data = serializer.to_dict(table_params)
             response = JsonResponse(data, status=200)
         else:
-            error = {"error": "TableParameters not found"}
-            response = JsonResponse(data=error, status=404)
+            error = error_response(Message.TABLE_PARAMETERS_NOT_FOUND.value)
+            response = JsonResponse(error, status=404)
         return response
 
     def post(self, request, *args, **kwargs):
@@ -26,6 +28,6 @@ class TableParametersView(View):
             data = serializer.to_dict(param)
             response = JsonResponse(data, status=201)
         else:
-            error = {"error": "TableParameters not found"}
+            error = error_response(Message.TABLE_PARAMETERS_NOT_CREATED.value)
             response = JsonResponse(error, status=400)
         return response
