@@ -12,8 +12,18 @@ def get_input_data_by_id(index: int) -> InputData:
     return input_data
 
 
-def create_input_data(input_d: InputData) -> InputData:
-    input_data = InputData.objects.create()
+def create_input(input_d: InputData) -> InputData:
+    input_data = InputData.objects.create(
+        table_parameters=input_d.table_parameters,
+        initial_time=input_d.initial_time,
+        time=input_d.time,
+        step=input_d.step,
+        matrix_stechiometric_coefficients=input_d.matrix_stechiometric_coefficients,
+        matrix_indicators=input_d.matrix_indicators,
+        experimental_data=input_d.experimental_data,
+        constants_speed=input_d.constants_speed,
+        method=input_d.method
+    )
     return input_data
 
 
@@ -36,22 +46,23 @@ def change_exp_data(experimental_data, solution, time):
     return exp_point
 
 
-def solve_ode(input_data):
-    matrix_stechiometric_coefficients = to_representation(input_data.get('matrix_stechiometric_coefficients'))
-    matrix_indicators = to_representation(input_data.get('matrix_indicators'))
-    experimental_data = to_representation(input_data.get('experimental_data'))
-    constants_speed = to_representation(input_data.get('constants_speed'))
-    initial_time = input_data['initial_time']
-    time = input_data['time']
-    step = input_data['step']
-    method = input_data['method']
+def solve_ode(input_data: InputData):
+    matrix_stechiometric_coefficients = to_representation(input_data.matrix_stechiometric_coefficients)
+    matrix_indicators = to_representation(input_data.matrix_indicators)
+    experimental_data = to_representation(input_data.experimental_data)
+    constants_speed = to_representation(input_data.constants_speed)
+    initial_time = input_data.initial_time
+    time = input_data.time
+    step = input_data.step
+    method = "EXPLICIT_EULER"
 
     y0 = experimental_data[0][1:]
     t = np.linspace(initial_time, time, int((time - initial_time) / step) + 1)
     t = [round(x, 6) for x in t]
+
     system = System_ODE(y0, matrix_stechiometric_coefficients, matrix_indicators, constants_speed)
-    result, t_eval = ODE_Library(system, method).solve(t, y0)
+    lib = ODE_Library(system, method)
+    result, t_eval = lib.solve(t, y0)
     experimental_point = change_exp_data(experimental_data, result, t)
     solution = create_solution(input_data, result, t_eval, experimental_point)
-
     return solution
