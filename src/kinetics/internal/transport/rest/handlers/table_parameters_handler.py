@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt, csrf_protect, requires_csrf_token
 
 from kinetics.internal.services.table_parameters_service import create_parameters, get_parameters_by_id
 from kinetics.internal.transport.rest.messages import Message
