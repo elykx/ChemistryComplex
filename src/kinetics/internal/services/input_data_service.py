@@ -3,8 +3,7 @@ from pydiffeq import ODE_Library
 
 from kinetics.internal.models.input_data import InputData
 from kinetics.internal.services.solution_data_service import create_solution
-from kinetics.internal.services.solution_services.changer_exp_data import change_exp_data
-from kinetics.internal.services.solution_services.ode_system import System_ODE
+from kinetics.internal.services.ode_system import System_ODE
 from kinetics.utils import to_representation
 
 
@@ -23,6 +22,18 @@ def matrix_to_representation(data):
     rows = data.split('],[')
     rows = [row.replace('[', '').replace(']', '') for row in rows]
     return [list(map(float, row.split(','))) for row in rows]
+
+
+def change_exp_data(experimental_data, solution, time):
+    exp_point = experimental_data.copy()
+    if len(time) != len(solution):
+        return experimental_data
+    for i in range(len(time)):
+        for j in range(len(experimental_data)):
+            if experimental_data[j][0] == time[i]:
+                print(solution[i])
+                exp_point[j][1:] = solution[i]
+    return exp_point
 
 
 def solve_ode(input_data):
