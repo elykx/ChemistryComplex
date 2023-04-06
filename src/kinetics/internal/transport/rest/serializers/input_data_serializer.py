@@ -1,11 +1,14 @@
 from kinetics.internal.models.input_data import InputData
+from kinetics.internal.transport.rest.serializers.table_parameters_serializer import TableParametersSerializer
 
 
 class InputDataSerializer:
     def to_dict(self, instance: InputData) -> dict:
+        param_serializer = TableParametersSerializer()
+        param_dict = param_serializer.to_dict(instance.table_parameters)
         return {
             "id": instance.id,
-            "table_parameters": instance.table_parameters,
+            "table_parameters": param_dict,
             "initial_time": instance.initial_time,
             "time": instance.time,
             "step": instance.step,

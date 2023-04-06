@@ -54,7 +54,7 @@ def solve_ode(input_data: InputData):
     initial_time = input_data.initial_time
     time = input_data.time
     step = input_data.step
-    method = "EXPLICIT_EULER"
+    method = input_data.method
 
     y0 = experimental_data[0][1:]
     t = np.linspace(initial_time, time, int((time - initial_time) / step) + 1)
