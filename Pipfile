@@ -28,6 +28,7 @@ isort = "*"
 flake8 = "*"
 black = "*"
 pydiffeqq = {version = "*", index = "testpypi"}
+django-environ = "*"
 
 [dev-packages]
 
