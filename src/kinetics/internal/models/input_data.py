@@ -1,8 +1,8 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from kinetics.internal.models.table_parameters import TableParameters
-from kinetics.internal.models.validators.matrix_validators import stechiometric_validator, min_max_validator
+from kinetics.internal.models.validators.matrix_validators import min_max_validator, stechiometric_validator
 from kinetics.internal.models.validators.methods_name import METHOD_CHOICES, MethodName
 
 

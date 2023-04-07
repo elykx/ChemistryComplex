@@ -1,9 +1,12 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from kinetics.internal.transport.rest.handlers.input_data_handler import get_input_data, create_input_data
-from kinetics.internal.transport.rest.handlers.table_parameters_handler import get_table_parameters, create_table_parameters
+from kinetics.internal.transport.rest.handlers.input_data_handler import create_input_data, get_input_data
 from kinetics.internal.transport.rest.handlers.solution_data_handler import get_solution
+from kinetics.internal.transport.rest.handlers.table_parameters_handler import (
+    create_table_parameters,
+    get_table_parameters,
+)
 
 app_name = 'kinetics'
 

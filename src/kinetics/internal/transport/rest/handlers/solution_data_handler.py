@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 
 from kinetics.internal.services.solution_data_service import get_solution_by_id
-from kinetics.internal.transport.rest.messages import Message
 from kinetics.internal.transport.rest.error import error_response
+from kinetics.internal.transport.rest.messages import Message
 from kinetics.internal.transport.rest.serializers.solution_data_serializer import SolutionDataSerializer
 
 
@@ -16,4 +16,3 @@ def get_solution(request, index):
         error = error_response(Message.SOLUTION_DATA_NOT_FOUND.value)
         response = JsonResponse(error, status=404)
     return response
-

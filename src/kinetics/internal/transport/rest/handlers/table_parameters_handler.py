@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from kinetics.internal.services.table_parameters_service import create_parameters, get_parameters_by_id
-from kinetics.internal.transport.rest.messages import Message
 from kinetics.internal.transport.rest.error import error_response
+from kinetics.internal.transport.rest.messages import Message
 from kinetics.internal.transport.rest.serializers.table_parameters_serializer import TableParametersSerializer
 
 

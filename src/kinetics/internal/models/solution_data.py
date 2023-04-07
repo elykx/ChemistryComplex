@@ -15,4 +15,3 @@ class SolutionData(models.Model):
 
     class Meta:
         verbose_name = "Solution Data"
-        
