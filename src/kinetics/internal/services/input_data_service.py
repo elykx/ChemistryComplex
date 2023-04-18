@@ -4,7 +4,7 @@ from pydiffeq import ODE_Library
 from kinetics.internal.models.input_data import InputData
 from kinetics.internal.services.ode_system import System_ODE
 from kinetics.internal.services.solution_data_service import create_solution
-from kinetics.utils import to_representation
+from kinetics.internal.services.utils import to_representation
 
 
 def get_input_data_by_id(index: int) -> InputData:
