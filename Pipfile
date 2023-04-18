@@ -29,6 +29,7 @@ flake8 = "*"
 black = "*"
 pydiffeqq = {version = "*", index = "testpypi"}
 django-environ = "*"
+openpyxl = "*"
 
 [dev-packages]
 

@@ -28,7 +28,6 @@ def get_input_data(request, index):
 def create_input_data(request, *args, **kwargs):
     serializer = InputDataSerializer()
     data = json.loads(request.body)
-    print(data)
     table_param_id = data["table_parameters"]
     table_param = get_parameters_by_id(table_param_id)
     data['table_parameters'] = table_param
@@ -39,7 +38,6 @@ def create_input_data(request, *args, **kwargs):
     if solution:
         solution_serializer = SolutionDataSerializer()
         data = solution_serializer.to_dict(solution)
-        print(data)
         response = JsonResponse(data, status=201)
     else:
         error = error_response(Message.INPUT_DATA_NOT_CREATED.value)
