@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from kinetics.internal.services.excel_service import create_excel_solution
 from kinetics.internal.services.solution_data_service import get_solution_by_id
@@ -22,9 +22,10 @@ def get_solution(request, index):
 def save_solution_report(request, index):
     solution = get_solution_by_id(index)
     if solution:
-        create_excel_solution(solution)
-        error = error_response(Message.SOLUTION_DATA_NOT_FOUND.value)
-        response = JsonResponse(data=error, status=200)
+        excel_file, file_name = create_excel_solution(solution)
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+        response.write(excel_file.read())
     else:
         error = error_response(Message.SOLUTION_DATA_NOT_FOUND.value)
         response = JsonResponse(error, status=404)

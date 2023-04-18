@@ -1,4 +1,6 @@
 import datetime
+from io import BytesIO
+
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font
@@ -76,4 +78,9 @@ def create_excel_solution(solution: SolutionData):
             ws.cell(row=8, column=i+1).value = value
 
     # Сохраните workbook
-    wb.save(f'Report({report_time}).xlsx')
+    file_name = f'Report({report_time}).xlsx'
+    stream = BytesIO()
+    wb.save(stream)
+    stream.seek(0)
+
+    return stream, file_name
