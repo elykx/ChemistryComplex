@@ -19,7 +19,7 @@ class System_ODE(ODE_System):
         for i in range(self.stages):
             sumR[i] = self.constants_speed[i][0]
             for j in range(self.components):
-                if self.matrix_indicators[i][j] != 0:
+                if self.matrix_indicators[i][j] != -1:
                     r[i] = y[j] ** self.matrix_indicators[i][j]
                     sumR[i] *= r[i]
         for i in range(self.components):

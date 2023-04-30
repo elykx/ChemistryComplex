@@ -27,7 +27,7 @@ virtualenv-clone = "==0.5.7"
 isort = "*"
 flake8 = "*"
 black = "*"
-pydiffeqq = {version = "*", index = "testpypi"}
+pydiffeqq = {version = "0.3", index = "testpypi"}
 django-environ = "*"
 openpyxl = "*"
 

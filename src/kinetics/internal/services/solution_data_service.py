@@ -9,11 +9,12 @@ def get_solution_by_id(index: int) -> SolutionData:
     return solution
 
 
-def create_solution(input_data: InputData, result, t_eval, exp_point) -> SolutionData:
+def create_solution(input_data: InputData, result, t_eval, exp_point, error_exp_point) -> SolutionData:
     solution_data = SolutionData.objects.create(
         input_data=input_data,
         result=json.dumps(result.tolist()),
         time=json.dumps(t_eval.tolist()),
         experimental_point=json.dumps(exp_point),
+        error_exp_point=json.dumps(error_exp_point),
     )
     return solution_data

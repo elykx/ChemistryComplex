@@ -8,6 +8,7 @@ class SolutionData(models.Model):
     result = models.TextField(verbose_name="Данные, расчитанные выбранным методом")
     experimental_point = models.TextField(verbose_name="Значение в эксп. точках")
     time = models.TextField(verbose_name="Время")
+    error_exp_point = models.TextField(verbose_name="Погрешность в эксп. точках")
 
     def __str__(self):
         return f"Input data: {self.input_data}, result:{self.result}, experimental points: {self.experimental_point}" \
