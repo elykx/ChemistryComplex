@@ -8,11 +8,11 @@ from kinetics.internal.models.validators.methods_name import METHOD_CHOICES, Met
 
 class InputData(models.Model):
     table_parameters = models.ForeignKey(TableParameters, on_delete=models.CASCADE, verbose_name="Параметры таблицы")
-    initial_time = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(1000)],
+    initial_time = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(999999)],
                                      verbose_name='Начальное время t0')
-    time = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(1000)],
+    time = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(999999)],
                              verbose_name='Время t', )
-    step = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(1000)],
+    step = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(999999)],
                              verbose_name='Шаг')
     matrix_stechiometric_coefficients = models.TextField(validators=[stechiometric_validator], verbose_name='Матрица стехиометрических коэффициентов')
     matrix_indicators = models.TextField(validators=[min_max_validator], verbose_name='Матрица показателей степени')

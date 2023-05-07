@@ -75,9 +75,9 @@ def solve_ode(input_data: InputData):
     system = System_ODE(y0, matrix_stechiometric_coefficients, matrix_indicators, constants_speed)
     lib = ODE_Library(system, method)
     result, t_eval = lib.solve(t, y0)
+    result = np.round(result, 3)
+    t_eval = np.round(t_eval, 2)
     experimental_point = change_exp_data(copy.deepcopy(experimental_data), result, t)
-    print(experimental_point)
     error_exp_point = calculate_error(copy.deepcopy(experimental_data), copy.deepcopy(experimental_point))
-    print("experimental_point", experimental_point, "error_exp_point", error_exp_point)
     solution = create_solution(input_data, result, t_eval, experimental_point, error_exp_point)
     return solution
