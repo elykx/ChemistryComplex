@@ -3,6 +3,14 @@
 ## Технологии
     Python v.3.10, Django v4.1
 
+## Запуск проекта
+```
+1) git clone
+2) pip install pipenv
+3) pipenv shell -> pipenv install
+4) python src/manage.py migrate (make migrate)
+5) python src/manage.py runserver localhost:8000 (make start_server)
+```
 ## Переменные окружения
     .env
     DEBUG=True
