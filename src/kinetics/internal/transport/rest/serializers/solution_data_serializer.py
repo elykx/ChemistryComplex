@@ -17,5 +17,6 @@ class SolutionDataSerializer:
             "result": instance.result,
             "experimental_point": instance.experimental_point,
             "error_exp_point": instance.error_exp_point,
-            "time": instance.time
+            "time": instance.time,
+            "runtime": instance.runtime
         }

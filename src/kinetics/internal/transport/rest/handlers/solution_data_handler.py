@@ -11,7 +11,6 @@ from kinetics.internal.transport.rest.serializers.solution_data_serializer impor
 def get_solution(request, index):
     solution = get_solution_by_id(index)
     if solution:
-        # sens = calculate_sensitivity(solution)
         serializer = SolutionDataSerializer()
         data = serializer.to_dict(solution)
         response = JsonResponse(data, status=200)

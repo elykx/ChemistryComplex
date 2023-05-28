@@ -9,6 +9,7 @@ class SolutionData(models.Model):
     experimental_point = models.TextField(verbose_name="Значение в эксп. точках")
     time = models.TextField(verbose_name="Время")
     error_exp_point = models.TextField(verbose_name="Погрешность в эксп. точках")
+    runtime = models.FloatField(verbose_name='Время выполнения', default=None)
 
     def __str__(self):
         return f"Input data: {self.input_data}, result:{self.result}, experimental points: {self.experimental_point}" \

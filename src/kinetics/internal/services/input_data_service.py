@@ -1,5 +1,5 @@
 import copy
-
+import time
 import numpy as np
 from pydiffeq import ODE_Library
 
@@ -64,20 +64,22 @@ def solve_ode(input_data: InputData):
     experimental_data = to_representation(input_data.experimental_data)
     constants_speed = to_representation(input_data.constants_speed)
     initial_time = input_data.initial_time
-    time = input_data.time
+    t = input_data.time
     step = input_data.step
     method = input_data.method
 
     y0 = experimental_data[0][1:]
-    t = np.linspace(initial_time, time, int((time - initial_time) / step) + 1)
+    t = np.linspace(initial_time, t, int((t - initial_time) / step) + 1)
     t = [round(x, 6) for x in t]
 
     system = System_ODE(y0, matrix_stechiometric_coefficients, matrix_indicators, constants_speed)
     lib = ODE_Library(system, method)
+    start_time = time.time()
     result, t_eval = lib.solve(t, y0)
+    runtime = round(time.time() - start_time, 5)
     result = np.round(result, 3)
     t_eval = np.round(t_eval, 2)
     experimental_point = change_exp_data(copy.deepcopy(experimental_data), result, t)
     error_exp_point = calculate_error(copy.deepcopy(experimental_data), copy.deepcopy(experimental_point))
-    solution = create_solution(input_data, result, t_eval, experimental_point, error_exp_point)
+    solution = create_solution(input_data, result, t_eval, experimental_point, error_exp_point, runtime)
     return solution
