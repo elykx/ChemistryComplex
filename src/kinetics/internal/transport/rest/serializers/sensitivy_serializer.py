@@ -8,4 +8,6 @@ class SensitivityResultSerializer:
             "average": instance.average,
             "absolute_average": instance.absolute_average,
             "standart_deviation": instance.standart_deviation,
+            "constant_speed_num": instance.constant_speed_num,
+            "time": instance.time,
         }

@@ -38,15 +38,16 @@ def calculate_sensitivity(solution: SolutionData) -> SensitivityResult:
     scaled_sample = scale_sample(b, cs, 0.25)
 
     delta = get_delta(grid_level)
-    mu, mu_star, sigma, num_const = elementary_effects(scaled_sample, solution, delta)
+    mu, mu_star, sigma, num_const = elementary_effects(scaled_sample, solution, delta, num_trajectory)
     mu = np.round(mu, 3)
     mu_star = np.round(mu_star, 3)
     sigma = np.round(sigma, 3)
 
     sensitivity = SensitivityResult.objects.create(
-        average=mu,
-        absolute_average=mu_star,
-        standart_deviation=sigma,
+        average=mu.tolist(),
+        absolute_average=mu_star.tolist(),
+        standart_deviation=sigma.tolist(),
         constant_speed_num=num_const,
+        time=t,
     )
     return sensitivity
