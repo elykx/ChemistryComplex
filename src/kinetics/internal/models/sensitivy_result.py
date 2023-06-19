@@ -6,6 +6,7 @@ class SensitivityResult(models.Model):
     absolute_average = models.TextField(verbose_name="Абсолютное среднее значение")
     standart_deviation = models.TextField(verbose_name="Стандартное отклонение")
     constant_speed_num = models.TextField(verbose_name="Нумерация констант скорости")
+    time = models.TextField(verbose_name="Время")
 
     class Meta:
         verbose_name = "Sensitivity Result"

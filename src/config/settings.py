@@ -16,21 +16,16 @@ import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(
-    DEBUG=(bool, True),
-    SECRET_KEY=(str, "")
-)
-environ.Env.read_env(env_file=".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = "django-insecure-62ob7$ba-1!jrq5l4e13i0%k)y95x*usyb3s1y@c!+%cg_!86o"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
